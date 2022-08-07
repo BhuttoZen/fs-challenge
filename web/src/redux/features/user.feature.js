@@ -1,4 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+const baseUrl = 'http://localhost:5000/'
 
 const initialState = {
     
@@ -8,6 +11,30 @@ const initialState = {
     },
     isLoggedIn : false
 };
+
+//----//
+export const signInUser = createAsyncThunk(
+    "user/signInUser",
+    async( data ) => {
+        try{
+            const userData = data.user;
+
+            const response = await axios.post(
+                (baseUrl + 'user_signin'),
+                {email: userData.email,password:userData.password},
+                {headers: { authorization : 'Bearer ' + data.token }},
+                );
+
+            console.log(response);
+            
+            return {email:userData.email,password:userData.password};
+        }
+        catch (e){
+            console.error(e);
+        }
+    }
+);
+//----//
 
 const userSlice = createSlice({
     name : 'user',
@@ -25,17 +52,21 @@ const userSlice = createSlice({
                 isLoggedIn : true
             }
         },
-        signIn ( state , action ){
-            
+    },
+    extraReducers : (builder) => {
+        builder.addCase(signInUser.fulfilled , (state,action) => {
+
             return {
                 ...state,
-                userData : {
-                    email : action.payload.email,
-                    password : action.payload.password
-                },
+                //userData : {
+                    //email : action.payload.email,
+                  //  password : action.payload.password
+                //},
                 isLoggedIn : true
-            }
-        }
+            }  
+        }).addCase(signInUser.rejected , (state,action) => {
+            console.log("Something went wrong");
+        })
     }
 });
 

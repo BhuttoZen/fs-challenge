@@ -17,7 +17,7 @@ app.use(middleware.decodeToken)
 const db = admin.firestore();
 
 
-app.post('/create', async ( req, res ) => {
+app.post('/user_register', async ( req, res ) => {
     try{
         const id = req.body.email;
         const userJson = {
@@ -32,9 +32,23 @@ app.post('/create', async ( req, res ) => {
     {
         res.send(e);
     }
+  });
 
-    
-  })
+  app.post('/user_signin',( req, res ) => {
+    try{
+        const userJson = {
+            email : req.body.email,
+            password : req.body.password
+        }
+
+        res.send("User Logged In Succesfully!");
+
+    }
+    catch(e)
+    {
+        res.send(e);
+    }
+  });
 
 
 app.listen(port, () => {
