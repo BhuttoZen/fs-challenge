@@ -1,84 +1,74 @@
 import React, { useEffect, useState } from 'react'
-import { signUp } from '../../redux/features/user.feature'
+import { signUp , signIn } from '../../redux/features/user.feature'
 import { useDispatch , useSelector } from 'react-redux'
 
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import {deleteUser,getAuth} from 'firebase/auth'
+
 import '../../config/firebase-config';
+import { useNavigate } from 'react-router-dom';
 
 
-const SignUp = () => {
+const SignUpOrSignIn = ({isSignIn}) => {
 
   const [{email,password} , setState ] = useState({email:"",password:""});
-
-  const [firebaseUser,setFirebaseUser] = useState([]);
   const dispatch = useDispatch();
-  const userState = useSelector(state => state.user);
-  useEffect( () => {
-    console.log(userState);
-  },[userState]);
 
+  const navigate = useNavigate();
+
+  
   const signUpWithEmailAndPassword = (email,password) => {
     firebase.auth().createUserWithEmailAndPassword(email,password)
     .then(userCred =>{
       const user = userCred.user;
-      setFirebaseUser(user);
-      console.log("FIREBASE USER::::     " + user.refreshToken);
+      console.log("FIREBASE USER::::     " + user.email);
+      
+      
+      isSignIn ? dispatch(signIn(email,password)) : dispatch(signUp(email,password));
+      navigate('/products');
+    
     })
     .catch(error => {
       console.log("Error message::::   " + error.message);
     })
   };
+
 
   const signInWithEmailAndPassword = (email,password) => {
     firebase.auth().signInWithEmailAndPassword(email,password)
     .then(userCred =>{
       const user = userCred.user;
-      console.log("FIREBASE LOGIN USER::::     " + user.emailVerified);
+      user.getIdToken().then((token) =>{
+        //console.log(token);
+      })
+      console.log("FIREBASE LOGIN USER ::  " + user.email);
+
+      isSignIn ? dispatch(signIn(email,password)) : dispatch(signUp(email,password));
+      navigate('/products');
     })
     .catch(error => {
-      console.log("Error message::::   " + error.message);
+      console.log("Error message ::  " + error.message);
     })
   };
 
-  const deleteFirebaseUser = () => {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    console.log("Firebase USER ::   " + firebaseUser)
-    deleteUser(firebaseUser)
-    .then(() => {
-      // User deleted.
-      console.log("USER DELETED")
-    })
-    .catch((error) => {
-      // An error ocurred
-      // ...
-      console.log(error.message);
-    });
-  }
-
-
   const handleChange = ( event ) => {
     const {value,name} = event.target;
-    setState( prevState => ({...prevState,[name]:value}));
-    
-    
-    
+    setState( prevState => ({...prevState,[name]:value}));  
   }
 
   const handleSubmit = (event) =>{
     event.preventDefault();
-    signInWithEmailAndPassword(email,password);
-    dispatch(signUp({email,password}));
-    setState({email:"",password:""})
+
+    isSignIn ? signInWithEmailAndPassword(email,password) : signUpWithEmailAndPassword(email,password);
+    
+    //setState({email:"",password:""})
 
   }
 
 
   return (
     <div>
-        <h2>Register Yourself</h2>
+        <h2>{isSignIn ? "Sign In with Email and Password!" : "Register Yourself"}</h2>
 
         <form onSubmit={handleSubmit}>
           
@@ -100,12 +90,11 @@ const SignUp = () => {
           onChange={handleChange}
           required />
 
-          <input type="submit" value="Sign Up" />
+          <input type="submit" value= { isSignIn ? "Sign In" : "Sign Up"} />
         </form>
-        <button
-        onClick={ deleteFirebaseUser } >DELETE USER</button>
+
     </div>
   )
 }
 
-export default SignUp;
+export default SignUpOrSignIn;

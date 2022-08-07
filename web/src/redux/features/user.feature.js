@@ -2,12 +2,11 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     
-    user : {
+    userData : {
         email : '',
         password : ''
     },
-    loading : false
-
+    isLoggedIn : false
 };
 
 const userSlice = createSlice({
@@ -15,12 +14,31 @@ const userSlice = createSlice({
     initialState : initialState,
     reducers : {
         signUp ( state , action ){
-            state.user.email = action.payload.email;
-            state.user.password = action.payload.password;
+            
+            return {
+                ...state,
+                userData : {
+                    email : action.payload.email,
+                    password : action.payload.password,
+                    
+                },
+                isLoggedIn : true
+            }
+        },
+        signIn ( state , action ){
+            
+            return {
+                ...state,
+                userData : {
+                    email : action.payload.email,
+                    password : action.payload.password
+                },
+                isLoggedIn : true
+            }
         }
     }
 });
 
 
-export const {signUp} = userSlice.actions;
+export const {signUp,signIn} = userSlice.actions;
 export default userSlice.reducer;
