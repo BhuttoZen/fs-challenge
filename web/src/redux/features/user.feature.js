@@ -35,7 +35,29 @@ export const signInUser = createAsyncThunk(
     }
 );
 //----//
+export const signUpUser = createAsyncThunk(
+    "user/signUpUser",
+    async( data ) => {
+        try{
+            const userData = data.user;
 
+            const response = await axios.post(
+                (baseUrl + 'user_signup'),
+                {email: userData.email,password:userData.password},
+                {headers: { authorization : 'Bearer ' + data.token }},
+                );
+
+            console.log(response);
+            
+            return {email:userData.email,password:userData.password};
+        }
+        catch (e){
+            console.error(e);
+        }
+    }
+);
+
+//----/
 const userSlice = createSlice({
     name : 'user',
     initialState : initialState,
@@ -58,15 +80,32 @@ const userSlice = createSlice({
 
             return {
                 ...state,
-                //userData : {
-                    //email : action.payload.email,
-                  //  password : action.payload.password
-                //},
+                userData : {
+                    email : action.payload.email,
+                    password : action.payload.password
+                },
                 isLoggedIn : true
             }  
         }).addCase(signInUser.rejected , (state,action) => {
             console.log("Something went wrong");
         })
+
+        builder.addCase(signUpUser.fulfilled , (state,action) => {
+
+            return {
+                ...state,
+                userData : {
+                    email : action.payload.email,
+                    password : action.payload.password
+                },
+                isLoggedIn : true
+            }  
+        }).addCase(signUpUser.rejected , (state,action) => {
+            console.log("Something went wrong");
+        })
+
+        
+
     }
 });
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { signUp , signInUser } from '../../redux/features/user.feature'
+import { signUpUser , signInUser } from '../../redux/features/user.feature'
 import { useDispatch , useSelector } from 'react-redux'
 
 import firebase from 'firebase/compat/app';
@@ -27,10 +27,11 @@ const SignUpOrSignIn = ({isSignIn}) => {
       const user = userCred.user;
       console.log("FIREBASE USER::::     " + user.email);
       
-      
-      dispatch(signUp(email,password));
-
-      navigate('/products');
+      user.getIdToken().then((token) =>{
+        //console.log(token);
+        dispatch(signUpUser({ user: { email,password } , token }));
+        navigate('/products');  
+      })
     
     })
     .catch(error => {
