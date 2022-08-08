@@ -3,7 +3,7 @@ import React from 'react';
 import './product-item.styles.scss';
 
 
-const ProductItem = ( { id, title, description, imageUrl} ) => {
+const ProductItem = ( { title, description, imageUrl} ) => {
     return(
         <div className='product-item'>
             <span className='title'>{title}</span>

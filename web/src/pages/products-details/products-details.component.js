@@ -1,8 +1,9 @@
-import React ,{useState} from 'react'
+import React ,{useEffect, useState} from 'react'
 
 import UserModal from '../../components/user-modal/user-modal.component'
 import ProductItem from '../../components/product-item/product-item.component';
 import './product-details.styles.scss'
+import { useSelector } from 'react-redux';
 
 const ProductsDetails = () => {
 
@@ -39,6 +40,12 @@ const ProductsDetails = () => {
     }
   ]);
 
+  const productsData = useSelector(state => state.product.productData)
+
+  useEffect(()=>{
+    console.log("product data length " + productsData.length)
+  },[productsData])
+
   
 
 
@@ -50,9 +57,9 @@ const ProductsDetails = () => {
       <h1 className='title'>Products Details Page</h1>
       <div className='preview'>
         {
-          productsList
-          .map(({id,...otherItemProps}) =>(
-            <ProductItem key={id} {...otherItemProps} />
+          productsData
+          .map(({...props},index) =>(
+            <ProductItem key={index} {...props} />
           ))
         }
       </div>
