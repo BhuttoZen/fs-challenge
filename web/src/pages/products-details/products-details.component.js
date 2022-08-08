@@ -38,6 +38,10 @@ const ProductsDetails = () => {
       id: 5
     }
   ]);
+
+  
+
+
   return (
     <div className='product-details'>
       <UserModal />

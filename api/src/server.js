@@ -35,6 +35,27 @@ app.post('/user_register', async ( req, res ) => {
     }
   });
 
+  app.post('/add_product', async ( req, res ) => {
+    try{
+        
+        const productJson = {
+            title : req.body.title,
+            description : req.body.description,
+            imageUrl : req.body.imageUrl
+        }
+        
+        const response = await db.collection("products").add(productJson);
+        console.log("Add new Product")
+        res.send(response);
+
+    }
+    catch(e)
+    {
+        res.send(e);
+    }
+  });
+
+
   app.post('/user_signin',( req, res ) => {
     try{
         const userJson = {

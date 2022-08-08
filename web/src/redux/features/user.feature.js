@@ -7,7 +7,8 @@ const initialState = {
     
     userData : {
         email : '',
-        password : ''
+        password : '',
+        userToken:''
     },
     isLoggedIn : false
 };
@@ -27,7 +28,7 @@ export const signInUser = createAsyncThunk(
 
             console.log(response);
             
-            return {email:userData.email,password:userData.password};
+            return {email:userData.email,password:userData.password,userToken:data.token};
         }
         catch (e){
             console.error(e);
@@ -49,7 +50,7 @@ export const signUpUser = createAsyncThunk(
 
             console.log(response);
             
-            return {email:userData.email,password:userData.password};
+            return {email:userData.email,password:userData.password,userToken:data.token};
         }
         catch (e){
             console.error(e);
@@ -69,6 +70,7 @@ const userSlice = createSlice({
                 userData : {
                     email : action.payload.email,
                     password : action.payload.password,
+                    userToken : action.payload.userToken
                     
                 },
                 isLoggedIn : true
@@ -82,7 +84,8 @@ const userSlice = createSlice({
                 ...state,
                 userData : {
                     email : action.payload.email,
-                    password : action.payload.password
+                    password : action.payload.password,
+                    userToken : action.payload.userToken
                 },
                 isLoggedIn : true
             }  
@@ -96,7 +99,8 @@ const userSlice = createSlice({
                 ...state,
                 userData : {
                     email : action.payload.email,
-                    password : action.payload.password
+                    password : action.payload.password,
+                    userToken : action.payload.userToken
                 },
                 isLoggedIn : true
             }  

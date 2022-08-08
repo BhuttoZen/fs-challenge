@@ -7,17 +7,19 @@ import thunk from 'redux-thunk'
 
 
 import userReducer from './features/user.feature';
+import productReducer from './features/product.feature';
 
 
 const reducers = combineReducers({
-  user : userReducer
+  user : userReducer,
+  product : productReducer
  });
 
 
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist : ['user']
+  //blacklist : ['user','product']
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
