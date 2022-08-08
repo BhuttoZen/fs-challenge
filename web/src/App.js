@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import SignUp from "./pages/Authentication/signup/signup.component";
 import SignIn from './pages/Authentication/signin/signin.component';
+import ProductsDetails from "./pages/products-details/products-details.component";
+
 import './config/firebase-config'
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
@@ -10,11 +12,8 @@ import { Route, Routes, Link, useLocation } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { current } from "@reduxjs/toolkit";
 
-const Products = () => (
-  <div>
-    <h1>Products</h1>
-  </div>
-)
+
+
 const App = () => {
 
 
@@ -45,7 +44,6 @@ const App = () => {
   return (
     
     <div>
-      <h1>Welcome to Products Dashboard</h1>
       {
         !isUserLoggedIn && isHomeLocation?
         <div>
@@ -83,7 +81,7 @@ const App = () => {
 
       {isUserLoggedIn && (<Route 
         path = "/products" 
-        element={<Products />} 
+        element={<ProductsDetails />} 
         />)}
       
       </Routes>

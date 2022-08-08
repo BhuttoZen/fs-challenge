@@ -6,8 +6,12 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
 import '../../config/firebase-config';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
+import './signup-or-signin.styles.css'
+
+import FormInput from  '../form-input/form-input.component';
+import CustomButton from '../custom-button/custom-button.component';
 
 const SignUpOrSignIn = ({isSignIn}) => {
 
@@ -68,30 +72,32 @@ const SignUpOrSignIn = ({isSignIn}) => {
 
 
   return (
-    <div>
-        <h2>{isSignIn ? "Sign In with Email and Password!" : "Register Yourself"}</h2>
+    <div className='signup-or-signin'>
+        <h2>{isSignIn ? "Login to your account" : "Register Yourself"}</h2>
+        <h5>{isSignIn ? "Don't have an account?" : "Already have an account?"}</h5>
+        <Link to={isSignIn ? "/signup" :"/signin"}>{isSignIn ? "Go to sign up" : "Go to sign in"}</Link>
 
-        <form onSubmit={handleSubmit}>
+        <form className='user-form' onSubmit={handleSubmit}>
           
-          <label>Email</label>
-          <input
+          <FormInput
           style={{marginLeft:10,marginRight:10}}
           type="email"
           name="email"
+          label = "Email"
           value={email}
-          onChange={handleChange}
+          handleChange={handleChange}
           required />
           
-          <label>Password</label>
-          <input
+          <FormInput
           style={{marginLeft:10,marginRight:10}}
           type="password"
           name="password"
+          label="Password"
           value={password}
-          onChange={handleChange}
+          handleChange={handleChange}
           required />
 
-          <input type="submit" value= { isSignIn ? "Sign In" : "Sign Up"} />
+          <CustomButton type="submit" > { isSignIn ? "Sign In" : "Sign Up"} </CustomButton>
         </form>
 
     </div>

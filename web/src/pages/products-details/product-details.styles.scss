@@ -1,0 +1,19 @@
+.product-details {
+    display: flex;
+    flex-direction: column;
+    width: 98%;
+    padding-left: 2%;
+
+  
+    .title {
+      font-size: 28px;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+  
+    .preview {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+  
