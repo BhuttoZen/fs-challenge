@@ -45,7 +45,7 @@ const productSlice = createSlice({
                 imageUrl : action.payload.imageUrl
             }
 
-            let newProductData = productData.push(product)
+            let newProductData = state.productData.push(product)
 
             return {
                 ...state,
