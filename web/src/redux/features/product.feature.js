@@ -5,11 +5,7 @@ const baseUrl = 'http://localhost:5000/'
 
 const initialState = {
     
-    productData : {
-        title : '',
-        description : '',
-        imageUrl : ''
-    },
+    productData : [],
     loading : true
 };
 
@@ -43,15 +39,19 @@ const productSlice = createSlice({
     extraReducers : (builder) => {
         builder.addCase(addProduct.fulfilled , (state,action) => {
 
+            let product = {
+                title : action.payload.title,
+                description : action.payload.description,
+                imageUrl : action.payload.imageUrl
+            }
+
+            let newProductData = productData.push(product)
+
             return {
                 ...state,
-                productData : {
-                    title : action.payload.title,
-                    description : action.payload.description,
-                    imageUrl : action.payload.imageUrl
-                },
+                productData :  newProductData,
                 loading : false
-            }  
+            }
         }).addCase(addProduct.rejected , (state,action) => {
             console.log("Something went wrong");
         })
