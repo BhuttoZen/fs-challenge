@@ -25,6 +25,7 @@ app.post('/user_register', async ( req, res ) => {
             password : req.body.password
         }
         const response = await db.collection("users").add(userJson);
+        console.log("Create User")
         res.send(response);
 
     }

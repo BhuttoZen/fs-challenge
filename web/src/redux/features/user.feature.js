@@ -42,7 +42,7 @@ export const signUpUser = createAsyncThunk(
             const userData = data.user;
 
             const response = await axios.post(
-                (baseUrl + 'user_signup'),
+                (baseUrl + 'user_register'),
                 {email: userData.email,password:userData.password},
                 {headers: { authorization : 'Bearer ' + data.token }},
                 );
